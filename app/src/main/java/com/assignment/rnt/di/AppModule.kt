@@ -1,5 +1,9 @@
 package com.assignment.rnt.di
 
+import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.assignment.rnt.BuildConfig
 import com.assignment.rnt.data.NumberDataSource
 import com.assignment.rnt.network.RandomNumberApi
@@ -8,6 +12,7 @@ import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -23,6 +28,12 @@ import javax.inject.Singleton
  * As these types are scoped to the application lifecycle using @Singleton, they're installed
  * in Hilt's ApplicationComponent.
  */
+
+/**
+ * DataStore.
+ */
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 @Module
 @InstallIn(SingletonComponent::class)
 @SuppressWarnings("unused")
@@ -70,7 +81,8 @@ object AppModule {
     @Provides
     fun provideNumberDataSource(
         api: RandomNumberApi,
+        @ApplicationContext context: Context
     ): NumberDataSource {
-        return NumberDataSource(api)
+        return NumberDataSource(context, api)
     }
 }

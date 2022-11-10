@@ -108,7 +108,9 @@ class NumberTestViewModel @Inject constructor(
             resultMessage
         )
 
-        //todo clear local storage
+        viewModelScope.launch {
+            numberDataSource.clearNumberFromLocalDataStore()
+        }
     }
 
 }
