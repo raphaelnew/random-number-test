@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.assignment.rnt.ui.screen.home.HomeScreen
 
 /**
  * NavHost composable.
@@ -16,7 +17,11 @@ fun MainNavHost(
 ) {
     NavHost(navController = navController, startDestination = startDestination) {
         composable("home") {
-            //todo home screen with start button.
+            HomeScreen(
+                onNavigateToNumberTest = {
+                    // todo navigate to NumberTest screen.
+                })
         }
+        //todo NumberTest screen.
     }
 }
