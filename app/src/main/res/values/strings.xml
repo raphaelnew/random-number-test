@@ -9,6 +9,7 @@
     <string name="number_test_retry_button">Retry</string>
     <string name="number_test_input_hint">Enter number</string>
     <string name="number_test_compare_button">Compare</string>
+    <string name="number_test_remote_number">Remote number: %1$d</string>
     <string name="number_test_error_invalid_number">Please enter valid number</string>
     <string name="error_prefix">Error: %1$s</string>
 
