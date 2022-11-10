@@ -1,11 +1,14 @@
 package com.assignment.rnt.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.assignment.rnt.ui.screen.home.HomeScreen
+import com.assignment.rnt.ui.screen.number.NumberTestScreen
+import com.assignment.rnt.ui.viewmodel.NumberTestViewModel
 
 /**
  * NavHost composable.
@@ -19,9 +22,14 @@ fun MainNavHost(
         composable("home") {
             HomeScreen(
                 onNavigateToNumberTest = {
-                    // todo navigate to NumberTest screen.
+                    navController.navigate("numberTest")
                 })
         }
-        //todo NumberTest screen.
+        composable("numberTest") {
+            val viewModel = hiltViewModel<NumberTestViewModel>()
+            NumberTestScreen(
+                viewModel = viewModel,
+                onNavigateBack = { navController.navigateUp() })
+        }
     }
 }

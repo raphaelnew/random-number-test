@@ -51,6 +51,9 @@ fun HomeScreen(onNavigateToNumberTest: (() -> Unit)? = null) {
     })
 }
 
+/**
+ * Previews with fake sample data
+ */
 @Preview
 @Composable
 fun HomePreviewLight() {
