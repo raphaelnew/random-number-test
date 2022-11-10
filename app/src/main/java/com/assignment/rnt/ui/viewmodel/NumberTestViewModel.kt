@@ -26,9 +26,11 @@ class NumberTestViewModel @Inject constructor(
 
     private val _numberUiState = MutableStateFlow<RemoteNumberUiState>(RemoteNumberUiState.Empty)
     private val _inputUiState = MutableStateFlow<LocalNumberUiState>(LocalNumberUiState.Normal())
+    private val _resultUiState = MutableStateFlow<ResultUiState>(ResultUiState.Empty)
 
     val numberUiState: StateFlow<RemoteNumberUiState> = _numberUiState
     val inputUiState: StateFlow<LocalNumberUiState> = _inputUiState
+    val resultUiState: StateFlow<ResultUiState> = _resultUiState
 
     init {
         fetchNumber()
@@ -75,7 +77,38 @@ class NumberTestViewModel @Inject constructor(
 
     fun compare() {
         Timber.d("compare")
-        //todo compare show result
+        val userInputNumber = inputUiState.value.number ?: return
+        val remoteNumber = (numberUiState.value as RemoteNumberUiState.Loaded?)?.number ?: return
+        val resultMessage = when (InputUtils.compareNumbers(userInputNumber, remoteNumber)) {
+            ComparisonResult.LOWER -> {
+                getApplication<RandomNumberApplication>().getString(
+                    R.string.result_lower,
+                    userInputNumber,
+                    remoteNumber
+                )
+            }
+            ComparisonResult.HIGHER -> {
+                getApplication<RandomNumberApplication>().getString(
+                    R.string.result_higher,
+                    userInputNumber,
+                    remoteNumber
+                )
+            }
+            ComparisonResult.EQUALS -> {
+                getApplication<RandomNumberApplication>().getString(
+                    R.string.result_equals,
+                    userInputNumber,
+                    remoteNumber
+                )
+            }
+        }
+        _resultUiState.value = ResultUiState.Compared(
+            userInputNumber,
+            remoteNumber,
+            resultMessage
+        )
+
+        //todo clear local storage
     }
 
 }
@@ -99,4 +132,17 @@ sealed class LocalNumberUiState(val numberString: String) {
         numberString: String = "",
         val error: String? = null,
     ) : LocalNumberUiState(numberString)
+}
+
+sealed class ResultUiState {
+    object Empty : ResultUiState()
+    class Compared(
+        val localNumber: Int,
+        val remoteNumber: Int,
+        val resultMessage: String
+    ) : ResultUiState()
+}
+
+enum class ComparisonResult {
+    LOWER, HIGHER, EQUALS
 }

@@ -16,6 +16,7 @@ import com.assignment.rnt.R
 import com.assignment.rnt.ui.viewmodel.LocalNumberUiState
 import com.assignment.rnt.ui.viewmodel.NumberTestViewModel
 import com.assignment.rnt.ui.viewmodel.RemoteNumberUiState
+import com.assignment.rnt.ui.viewmodel.ResultUiState
 
 /**
  * Screen for fetching random number, take input from user, show result.
@@ -28,6 +29,7 @@ fun NumberTestScreen(
     NumberTestScreen(
         numberUiState = viewModel.numberUiState.collectAsState().value,
         inputUiState = viewModel.inputUiState.collectAsState().value,
+        resultUiState = viewModel.resultUiState.collectAsState().value,
         onValidateInput = { input -> viewModel.validateInput(input) },
         onCompareClicked = { viewModel.compare() },
         onRetryClicked = { viewModel.fetchNumber(true) },
@@ -40,6 +42,7 @@ fun NumberTestScreen(
 private fun NumberTestScreen(
     numberUiState: RemoteNumberUiState,
     inputUiState: LocalNumberUiState,
+    resultUiState: ResultUiState,
     onValidateInput: ((String) -> Unit)? = null,
     onCompareClicked: (() -> Unit)? = null,
     onRetryClicked: (() -> Unit)? = null,
@@ -68,17 +71,24 @@ private fun NumberTestScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                if (numberUiState is RemoteNumberUiState.Loaded) {
-                    UserInput(
-                        inputUiState = inputUiState,
-                        onValidateInput = onValidateInput,
-                        onCompareClicked = onCompareClicked
-                    )
-                } else {
-                    RemoteNumberStatus(
-                        numberUiState = numberUiState,
-                        onRetryClicked = onRetryClicked
-                    )
+                when (resultUiState) {
+                    is ResultUiState.Empty -> {
+                        if (numberUiState is RemoteNumberUiState.Loaded) {
+                            UserInput(
+                                inputUiState = inputUiState,
+                                onValidateInput = onValidateInput,
+                                onCompareClicked = onCompareClicked
+                            )
+                        } else {
+                            RemoteNumberStatus(
+                                numberUiState = numberUiState,
+                                onRetryClicked = onRetryClicked
+                            )
+                        }
+                    }
+                    is ResultUiState.Compared -> {
+                        NumberResultStatus(resultUiState)
+                    }
                 }
             }
         }

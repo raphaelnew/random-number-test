@@ -12,5 +12,13 @@
     <string name="number_test_error_invalid_number">Please enter valid number</string>
     <string name="error_prefix">Error: %1$s</string>
 
+    <string name="result_header_local">Your number</string>
+    <string name="result_header_remote">Remote number</string>
+    <string name="result_header_comparison">Comparison</string>
+
+    <string name="result_higher">%1$d is higher than %2$d</string>
+    <string name="result_lower">%1$d is lower than %2$d</string>
+    <string name="result_equals">%1$d equals %2$d</string>
+
     <string name="content_description_nav_back">Navigate back</string>
 </resources>
