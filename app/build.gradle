@@ -26,7 +26,7 @@ android {
     productFlavors {
         dev {
             dimension "type"
-            buildConfigField "String", "API_ENDPOINT", '"https://api.coingecko.com/api/v3/"'
+            buildConfigField "String", "API_ENDPOINT", '"https://www.randomnumberapi.com/api/v1.0/"'
         }
     }
     buildTypes {
